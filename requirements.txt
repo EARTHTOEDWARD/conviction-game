@@ -1,0 +1,15 @@
+# requirements.txt
+# Core dependencies for Conviction game
+
+# Web server and WebSocket support
+aiohttp>=3.8.0
+aiohttp-cors>=0.7.0
+
+# For the terminal-based board render (optional)
+rich>=13.0.0
+
+# Async utilities
+asyncio>=3.4.3
+
+# Data handling
+dataclasses>=0.6  # For Python 3.6 compatibility
