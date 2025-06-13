@@ -96,6 +96,68 @@ class ConvictionWebBridge:
             # Handle game actions
             action_data = data.get('data', {})
             await self.process_game_action(action_data)
+        elif data.get('action') == 'submit_turn':
+            # Handle player turn submissions
+            await self.handle_player_action(ws, data)
+    
+    async def handle_player_action(self, ws: web.WebSocketResponse, data: Dict):
+        """Handle actions from players."""
+        action = data.get('action')
+        
+        if action == 'submit_turn':
+            bloc = data.get('bloc')
+            budget = data.get('budget')
+            card = data.get('card')
+            
+            logger.info(f"\n{bloc} submitted turn:")
+            logger.info(f"  Budget: {budget}")
+            logger.info(f"  Card: {card}")
+            
+            # Store the submission (in a real game, validate and process)
+            if not hasattr(self, 'turn_submissions'):
+                self.turn_submissions = {}
+            
+            self.turn_submissions[bloc] = {
+                'budget': budget,
+                'card': card,
+                'timestamp': asyncio.get_event_loop().time()
+            }
+            
+            # Send confirmation
+            await ws.send_str(json.dumps({
+                'type': 'turn_submitted',
+                'bloc': bloc,
+                'accepted': True
+            }))
+            
+            # Check if all players submitted
+            if len(self.turn_submissions) == 3:
+                logger.info("\nAll players have submitted!")
+                await self.process_turn()
+    
+    async def process_turn(self):
+        """Process the turn once all players have submitted."""
+        # This is where you'd integrate with your game engine
+        logger.info("\nProcessing turn...")
+        
+        # For demo: simulate some results
+        await asyncio.sleep(2)
+        
+        # Clear submissions for next turn
+        self.turn_submissions = {}
+        
+        # Broadcast phase change
+        await self.broadcast_update('phase_update', {
+            'turn': getattr(self.game, 'turn', 1),
+            'phase': 'Resolution'
+        })
+        
+        # After processing, return to planning phase
+        await asyncio.sleep(3)
+        await self.broadcast_update('phase_update', {
+            'turn': getattr(self.game, 'turn', 1) + 1,
+            'phase': 'Planning'
+        })
     
     async def get_game_state(self, request):
         """HTTP endpoint to get current game state."""

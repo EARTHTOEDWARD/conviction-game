@@ -12,37 +12,526 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
             background: #1a1a2e;
             color: #fff;
             display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: 200;
+            letter-spacing: 0.2em;
+            opacity: 0.9;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            position: relative;
+        }
+
+        .map-container {
+            flex: 1;
+            display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
+            padding: 20px;
         }
 
         #mapCanvas {
             background: #0f3460;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-width: 100%;
+            height: auto;
         }
 
-        .title {
-            position: absolute;
-            top: 30px;
+        /* Control Panel Styles */
+        .control-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .control-panel.active {
+            transform: translateY(0);
+        }
+
+        .control-toggle {
+            position: fixed;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 3em;
-            font-weight: 200;
-            letter-spacing: 0.2em;
-            opacity: 0.9;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 10px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .control-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .player-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .player-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .player-name {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .gdp-display {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .usa-section .player-name { color: #3b82f6; }
+        .eu-section .player-name { color: #10b981; }
+        .china-section .player-name { color: #ef4444; }
+
+        /* Budget Controls */
+        .budget-section {
+            margin-bottom: 20px;
+        }
+
+        .budget-title {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+
+        .budget-item {
+            margin-bottom: 15px;
+        }
+
+        .budget-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .budget-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .budget-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .budget-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Card Selection */
+        .card-section {
+            margin-bottom: 20px;
+        }
+
+        .card-select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .card-select option {
+            background: #1a1a2e;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .usa-section .submit-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .eu-section .submit-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .china-section .submit-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Phase indicator */
+        .phase-indicator {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9em;
+        }
+
+        .phase-indicator .phase {
+            color: #60a5fa;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <h1 class="title">CONVICTION 2040</h1>
-    <canvas id="mapCanvas" width="1400" height="700"></canvas>
+    <div class="header">
+        <h1 class="title">CONVICTION 2040</h1>
+    </div>
+
+    <div class="phase-indicator">
+        Turn <span id="turnNum">1</span> • <span class="phase" id="phaseText">Planning</span>
+    </div>
+
+    <div class="main-container">
+        <div class="map-container">
+            <canvas id="mapCanvas" width="1400" height="700"></canvas>
+        </div>
+    </div>
+
+    <div class="control-toggle" onclick="toggleControls()">
+        <span id="toggleText">Show Controls ▲</span>
+    </div>
+
+    <div class="control-panel" id="controlPanel">
+        <div class="controls-grid">
+            <!-- USA Controls -->
+            <div class="player-section usa-section">
+                <div class="player-header">
+                    <div class="player-name">USA</div>
+                    <div class="gdp-display">💰 <span id="usaGdp">10</span> GDP</div>
+                </div>
+
+                <div class="budget-section">
+                    <div class="budget-title">Budget Allocation</div>
+                    
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Military</span>
+                            <span id="usaMilitaryVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
+                               id="usaMilitary" onchange="updateBudget('usa', 'Military')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Technology</span>
+                            <span id="usaTechnologyVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
+                               id="usaTechnology" onchange="updateBudget('usa', 'Technology')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Culture</span>
+                            <span id="usaCultureVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
+                               id="usaCulture" onchange="updateBudget('usa', 'Culture')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Infrastructure</span>
+                            <span id="usaInfrastructureVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
+                               id="usaInfrastructure" onchange="updateBudget('usa', 'Infrastructure')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Diplomacy</span>
+                            <span id="usaDiplomacyVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
+                               id="usaDiplomacy" onchange="updateBudget('usa', 'Diplomacy')">
+                    </div>
+
+                    <div style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">
+                        Remaining: <span id="usaRemaining">10</span>
+                    </div>
+                </div>
+
+                <div class="card-section">
+                    <div class="budget-title">Action Card</div>
+                    <select class="card-select" id="usaCard">
+                        <option value="">Select a card...</option>
+                        <option value="CYBER_ESPIONAGE">Cyber Espionage - Steal tech</option>
+                        <option value="TARIFF_HIKE">Tariff Hike - Reduce opponent GDP</option>
+                        <option value="PROXY_ARMS">Proxy Arms - Boost military</option>
+                        <option value="STANDARDS_PUSH">Standards Push - Increase drag</option>
+                        <option value="DISINFORMATION">Disinformation - Reduce cohesion</option>
+                        <option value="COUNTER_INTEL">Counter Intel - Boost trust</option>
+                        <option value="TRADE_DEAL">Trade Deal - Boost economy</option>
+                        <option value="AID_RECONSTRUCTION">Aid/Reconstruction - Boost influence</option>
+                        <option value="LOBBYING_BLITZ">Lobbying Blitz - Reduce drag</option>
+                        <option value="CONTENT_MODERATION">Content Moderation - Boost cohesion</option>
+                    </select>
+                </div>
+
+                <button class="submit-btn" onclick="submitTurn('USA')" id="usaSubmit">
+                    Submit Turn
+                </button>
+            </div>
+
+            <!-- EU Controls -->
+            <div class="player-section eu-section">
+                <div class="player-header">
+                    <div class="player-name">EU</div>
+                    <div class="gdp-display">💰 <span id="euGdp">8</span> GDP</div>
+                </div>
+
+                <div class="budget-section">
+                    <div class="budget-title">Budget Allocation</div>
+                    
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Military</span>
+                            <span id="euMilitaryVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
+                               id="euMilitary" onchange="updateBudget('eu', 'Military')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Technology</span>
+                            <span id="euTechnologyVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
+                               id="euTechnology" onchange="updateBudget('eu', 'Technology')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Culture</span>
+                            <span id="euCultureVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
+                               id="euCulture" onchange="updateBudget('eu', 'Culture')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Infrastructure</span>
+                            <span id="euInfrastructureVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
+                               id="euInfrastructure" onchange="updateBudget('eu', 'Infrastructure')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Diplomacy</span>
+                            <span id="euDiplomacyVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
+                               id="euDiplomacy" onchange="updateBudget('eu', 'Diplomacy')">
+                    </div>
+
+                    <div style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">
+                        Remaining: <span id="euRemaining">8</span>
+                    </div>
+                </div>
+
+                <div class="card-section">
+                    <div class="budget-title">Action Card</div>
+                    <select class="card-select" id="euCard">
+                        <option value="">Select a card...</option>
+                        <option value="CYBER_ESPIONAGE">Cyber Espionage - Steal tech</option>
+                        <option value="TARIFF_HIKE">Tariff Hike - Reduce opponent GDP</option>
+                        <option value="PROXY_ARMS">Proxy Arms - Boost military</option>
+                        <option value="STANDARDS_PUSH">Standards Push - Increase drag</option>
+                        <option value="DISINFORMATION">Disinformation - Reduce cohesion</option>
+                        <option value="COUNTER_INTEL">Counter Intel - Boost trust</option>
+                        <option value="TRADE_DEAL">Trade Deal - Boost economy</option>
+                        <option value="AID_RECONSTRUCTION">Aid/Reconstruction - Boost influence</option>
+                        <option value="LOBBYING_BLITZ">Lobbying Blitz - Reduce drag</option>
+                        <option value="CONTENT_MODERATION">Content Moderation - Boost cohesion</option>
+                    </select>
+                </div>
+
+                <button class="submit-btn" onclick="submitTurn('EU')" id="euSubmit">
+                    Submit Turn
+                </button>
+            </div>
+
+            <!-- China Controls -->
+            <div class="player-section china-section">
+                <div class="player-header">
+                    <div class="player-name">China</div>
+                    <div class="gdp-display">💰 <span id="chinaGdp">12</span> GDP</div>
+                </div>
+
+                <div class="budget-section">
+                    <div class="budget-title">Budget Allocation</div>
+                    
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Military</span>
+                            <span id="chinaMilitaryVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
+                               id="chinaMilitary" onchange="updateBudget('china', 'Military')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Technology</span>
+                            <span id="chinaTechnologyVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
+                               id="chinaTechnology" onchange="updateBudget('china', 'Technology')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Culture</span>
+                            <span id="chinaCultureVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
+                               id="chinaCulture" onchange="updateBudget('china', 'Culture')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Infrastructure</span>
+                            <span id="chinaInfrastructureVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
+                               id="chinaInfrastructure" onchange="updateBudget('china', 'Infrastructure')">
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Diplomacy</span>
+                            <span id="chinaDiplomacyVal">0</span>
+                        </div>
+                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
+                               id="chinaDiplomacy" onchange="updateBudget('china', 'Diplomacy')">
+                    </div>
+
+                    <div style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">
+                        Remaining: <span id="chinaRemaining">12</span>
+                    </div>
+                </div>
+
+                <div class="card-section">
+                    <div class="budget-title">Action Card</div>
+                    <select class="card-select" id="chinaCard">
+                        <option value="">Select a card...</option>
+                        <option value="CYBER_ESPIONAGE">Cyber Espionage - Steal tech</option>
+                        <option value="TARIFF_HIKE">Tariff Hike - Reduce opponent GDP</option>
+                        <option value="PROXY_ARMS">Proxy Arms - Boost military</option>
+                        <option value="STANDARDS_PUSH">Standards Push - Increase drag</option>
+                        <option value="DISINFORMATION">Disinformation - Reduce cohesion</option>
+                        <option value="COUNTER_INTEL">Counter Intel - Boost trust</option>
+                        <option value="TRADE_DEAL">Trade Deal - Boost economy</option>
+                        <option value="AID_RECONSTRUCTION">Aid/Reconstruction - Boost influence</option>
+                        <option value="LOBBYING_BLITZ">Lobbying Blitz - Reduce drag</option>
+                        <option value="CONTENT_MODERATION">Content Moderation - Boost cohesion</option>
+                    </select>
+                </div>
+
+                <button class="submit-btn" onclick="submitTurn('China')" id="chinaSubmit">
+                    Submit Turn
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const canvas = document.getElementById('mapCanvas');
@@ -376,7 +865,7 @@
             ctx.fillRect(canvas.width - 200, 70, 150, 30);
             
             ctx.fillStyle = color;
-            ctx.font = '12px Inter';
+            ctx.font = '12px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'right';
             ctx.fillText(text, canvas.width - 60, 88);
         }
@@ -509,14 +998,14 @@
                 
                 // Region name
                 ctx.fillStyle = '#fff';
-                ctx.font = region.isBloc ? 'bold 20px Inter' : '14px Inter';
+                ctx.font = region.isBloc ? 'bold 20px system-ui, -apple-system, sans-serif' : '14px system-ui, -apple-system, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(region.name, region.x, region.y);
                 
                 // Influence indicator (dice)
                 if (!region.isBloc && region.die) {
-                    ctx.font = '20px serif';
+                    ctx.font = '20px sans-serif';
                     const diceSymbols = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
                     ctx.fillText(diceSymbols[region.die] || '⚂', region.x, region.y + 25);
                 }
@@ -524,7 +1013,7 @@
             
             // Redraw legend
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.font = '12px Inter';
+            ctx.font = '12px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'left';
             
             const legendY = canvas.height - 50;
@@ -551,10 +1040,8 @@
             ctx.stroke();
             
             // Update turn/phase indicator
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-            ctx.font = '14px Inter';
-            ctx.textAlign = 'right';
-            ctx.fillText(`Turn ${currentGameState.turn} • ${currentGameState.phase} Phase`, canvas.width - 50, 50);
+            document.getElementById('turnNum').textContent = currentGameState.turn;
+            document.getElementById('phaseText').textContent = currentGameState.phase;
         }
         
         // Add click handling for regions
@@ -577,6 +1064,188 @@
         
         // Connect when page loads
         connectWebSocket();
+        
+        // ===== PLAYER CONTROL FUNCTIONS =====
+        
+        // Track game state
+        const gameState = {
+            USA: { gdp: 10, budget: {}, card: null, submitted: false },
+            EU: { gdp: 8, budget: {}, card: null, submitted: false },
+            China: { gdp: 12, budget: {}, card: null, submitted: false },
+            phase: 'Planning',
+            turn: 1
+        };
+        
+        // Toggle control panel
+        function toggleControls() {
+            const panel = document.getElementById('controlPanel');
+            const toggle = document.getElementById('toggleText');
+            
+            if (panel.classList.contains('active')) {
+                panel.classList.remove('active');
+                toggle.textContent = 'Show Controls ▲';
+            } else {
+                panel.classList.add('active');
+                toggle.textContent = 'Hide Controls ▼';
+            }
+        }
+        
+        // Update budget allocation
+        function updateBudget(bloc, category) {
+            const blocName = bloc.toUpperCase();
+            const slider = document.getElementById(bloc + category);
+            const valueDisplay = document.getElementById(bloc + category + 'Val');
+            const remainingDisplay = document.getElementById(bloc + 'Remaining');
+            
+            const value = parseInt(slider.value);
+            valueDisplay.textContent = value;
+            
+            // Calculate total spent
+            const categories = ['Military', 'Technology', 'Culture', 'Infrastructure', 'Diplomacy'];
+            let totalSpent = 0;
+            
+            categories.forEach(cat => {
+                const catSlider = document.getElementById(bloc + cat);
+                totalSpent += parseInt(catSlider.value);
+            });
+            
+            const maxGdp = gameState[blocName].gdp;
+            
+            // Check if over budget
+            if (totalSpent > maxGdp) {
+                // Reduce this slider to fit budget
+                const excess = totalSpent - maxGdp;
+                slider.value = Math.max(0, value - excess);
+                valueDisplay.textContent = slider.value;
+                totalSpent = maxGdp;
+            }
+            
+            // Update remaining display
+            remainingDisplay.textContent = maxGdp - totalSpent;
+            
+            // Store budget in game state
+            if (!gameState[blocName].budget) {
+                gameState[blocName].budget = {};
+            }
+            gameState[blocName].budget[category.toLowerCase()] = parseInt(slider.value);
+        }
+        
+        // Submit turn for a bloc
+        function submitTurn(bloc) {
+            const cardSelect = document.getElementById(bloc.toLowerCase() + 'Card');
+            const submitBtn = document.getElementById(bloc.toLowerCase() + 'Submit');
+            
+            // Validate card selection
+            if (!cardSelect.value) {
+                alert(bloc + ' must select an action card!');
+                return;
+            }
+            
+            // Calculate total budget spent
+            const categories = ['Military', 'Technology', 'Culture', 'Infrastructure', 'Diplomacy'];
+            let totalSpent = 0;
+            const budget = {};
+            
+            categories.forEach(cat => {
+                const value = parseInt(document.getElementById(bloc.toLowerCase() + cat).value);
+                budget[cat.toLowerCase()] = value;
+                totalSpent += value;
+            });
+            
+            // Store submission
+            gameState[bloc].card = cardSelect.value;
+            gameState[bloc].budget = budget;
+            gameState[bloc].submitted = true;
+            
+            // Disable controls
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitted ✓';
+            
+            // Send to server if connected
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    action: 'submit_turn',
+                    bloc: bloc,
+                    budget: budget,
+                    card: cardSelect.value
+                }));
+            }
+            
+            // Check if all players submitted
+            if (gameState.USA.submitted && gameState.EU.submitted && gameState.China.submitted) {
+                setTimeout(() => {
+                    alert('All players have submitted! Moving to Resolution Phase...');
+                    resetTurnSubmissions();
+                }, 500);
+            }
+        }
+        
+        // Reset turn submissions
+        function resetTurnSubmissions() {
+            ['USA', 'EU', 'China'].forEach(bloc => {
+                gameState[bloc].submitted = false;
+                
+                // Reset UI
+                const submitBtn = document.getElementById(bloc.toLowerCase() + 'Submit');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Turn';
+                
+                // Reset sliders
+                const categories = ['Military', 'Technology', 'Culture', 'Infrastructure', 'Diplomacy'];
+                categories.forEach(cat => {
+                    const slider = document.getElementById(bloc.toLowerCase() + cat);
+                    slider.value = '0';
+                    const valueDisplay = document.getElementById(bloc.toLowerCase() + cat + 'Val');
+                    valueDisplay.textContent = '0';
+                });
+                
+                // Reset card selection
+                document.getElementById(bloc.toLowerCase() + 'Card').value = '';
+                
+                // Update remaining display
+                document.getElementById(bloc.toLowerCase() + 'Remaining').textContent = gameState[bloc].gdp;
+            });
+        }
+        
+        // Handle game state updates from server
+        function updateGameState(data) {
+            if (data.blocs) {
+                // Update GDP displays
+                Object.entries(data.blocs).forEach(([blocName, blocData]) => {
+                    const gdpDisplay = document.getElementById(blocName.toLowerCase() + 'Gdp');
+                    if (gdpDisplay && blocData.gdp_tokens !== undefined) {
+                        gdpDisplay.textContent = blocData.gdp_tokens;
+                        gameState[blocName].gdp = blocData.gdp_tokens;
+                    }
+                });
+            }
+            
+            if (data.turn) {
+                document.getElementById('turnNum').textContent = data.turn;
+                gameState.turn = data.turn;
+            }
+            
+            if (data.phase) {
+                document.getElementById('phaseText').textContent = data.phase;
+                gameState.phase = data.phase;
+                
+                // Reset submissions on new planning phase
+                if (data.phase === 'Planning') {
+                    resetTurnSubmissions();
+                }
+            }
+        }
+        
+        // Add this to the existing handleGameUpdate function
+        const originalHandleGameUpdate = handleGameUpdate;
+        handleGameUpdate = function(message) {
+            originalHandleGameUpdate(message);
+            
+            // Also update player controls
+            if (message.blocs || message.turn || message.phase) {
+                updateGameState(message);
+            }
+        };
     </script>
 </body>
 </html>
