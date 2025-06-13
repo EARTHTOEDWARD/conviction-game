@@ -349,6 +349,45 @@ class ConvictionWebBridge:
         """Set the game instance for the bridge."""
         self.game = game
     
+    def calculate_bloc_power(self, bloc):
+        """Calculate victory points breakdown for a bloc"""
+        return {
+            'vp': getattr(bloc, 'bloc_vp', lambda: getattr(bloc, 'victory_points', 10))(),
+            'gdp': getattr(bloc, 'gdp_tokens', 5),
+            'tech': getattr(bloc, 'tech_bonus', lambda: getattr(bloc, 'tech_level', 0))(),
+            'military': getattr(bloc, 'military_posture', 0) * 2,
+            'culture': getattr(bloc, 'cultural_influence', 0),
+            'cohesion': getattr(bloc, 'cohesion', 5),
+            'drag': getattr(bloc, 'effective_drag', lambda: getattr(bloc, 'regulatory_drag', 0))()
+        }
+
+    async def broadcast_power_update(self):
+        """Send power balance update to all clients"""
+        if not self.game or not hasattr(self.game, 'powers'):
+            return
+            
+        power_data = {}
+        for name, bloc in self.game.powers.items():
+            # Map game power names to frontend names
+            frontend_name = name.lower()
+            if frontend_name == 'red':
+                frontend_name = 'usa'
+            elif frontend_name == 'blue':
+                frontend_name = 'eu'
+            elif frontend_name not in ['usa', 'eu', 'china']:
+                # Skip unknown power names
+                continue
+                
+            power_data[frontend_name] = self.calculate_bloc_power(bloc)
+        
+        # Get victory threshold from game or use default
+        victory_threshold = getattr(self.game, 'victory_threshold', 50)
+        
+        await self.broadcast_update('power_update', {
+            'power': power_data,
+            'victory_threshold': victory_threshold
+        })
+    
     async def run(self, host='localhost', port=8080):
         """Start the web server."""
         runner = web.AppRunner(self.app)

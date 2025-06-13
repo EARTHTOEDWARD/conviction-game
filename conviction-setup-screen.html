@@ -1,0 +1,638 @@
+<!-- Add this to your conviction_abstract_map.html -->
+
+<!-- Setup Screen HTML (add after <body> tag) -->
+<div id="setupScreen" class="setup-screen">
+    <div class="setup-background"></div>
+    
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1 class="game-title">CONVICTION 2040</h1>
+            <p class="game-subtitle">The Three-Bloc Geopolitical Strategy Game</p>
+        </div>
+        
+        <div class="setup-content">
+            <!-- Bloc Selection -->
+            <div class="bloc-selection">
+                <h2>Choose Your Bloc</h2>
+                <div class="bloc-options">
+                    <div class="bloc-card usa-card" data-bloc="USA">
+                        <div class="bloc-icon">🇺🇸</div>
+                        <h3>USA</h3>
+                        <p class="bloc-description">
+                            <strong>Strengths:</strong> Military & Technology<br>
+                            <strong>Strategy:</strong> Aggressive expansion
+                        </p>
+                        <div class="bloc-stats">
+                            <div class="stat">
+                                <span class="stat-label">Military</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Tech</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Culture</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 70%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bloc-card eu-card" data-bloc="EU">
+                        <div class="bloc-icon">🇪🇺</div>
+                        <h3>EU</h3>
+                        <p class="bloc-description">
+                            <strong>Strengths:</strong> Diplomacy & Culture<br>
+                            <strong>Strategy:</strong> Coalition building
+                        </p>
+                        <div class="bloc-stats">
+                            <div class="stat">
+                                <span class="stat-label">Military</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Tech</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Culture</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 95%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bloc-card china-card" data-bloc="CHINA">
+                        <div class="bloc-icon">🇨🇳</div>
+                        <h3>CHINA</h3>
+                        <p class="bloc-description">
+                            <strong>Strengths:</strong> Infrastructure & Economy<br>
+                            <strong>Strategy:</strong> Long-term development
+                        </p>
+                        <div class="bloc-stats">
+                            <div class="stat">
+                                <span class="stat-label">Military</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Tech</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Culture</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game Settings -->
+            <div class="game-settings">
+                <h2>Game Settings</h2>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label for="turnLimit">Turn Limit</label>
+                        <div class="setting-control">
+                            <input type="range" id="turnLimit" min="10" max="100" value="50" step="10">
+                            <span id="turnLimitValue" class="setting-value">50</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="victoryPoints">Victory Points to Win</label>
+                        <div class="setting-control">
+                            <input type="range" id="victoryPoints" min="30" max="100" value="50" step="10">
+                            <span id="victoryPointsValue" class="setting-value">50</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="aiOpponents">AI Opponents</label>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" id="aiOpponents" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="gameSpeed">Game Speed</label>
+                        <div class="setting-control">
+                            <select id="gameSpeed">
+                                <option value="slow">Slow (60s turns)</option>
+                                <option value="normal" selected>Normal (30s turns)</option>
+                                <option value="fast">Fast (15s turns)</option>
+                                <option value="unlimited">Unlimited</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Start Button -->
+            <div class="start-section">
+                <button id="startGameBtn" class="start-game-btn" disabled>
+                    SELECT A BLOC TO BEGIN
+                </button>
+                <p class="game-info">
+                    Balance territorial control, technological advancement, and diplomatic relationships while managing the friction that comes with rapid change.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Setup Screen CSS -->
+<style>
+/* Setup Screen Styles */
+.setup-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f0f1e;
+    overflow-y: auto;
+}
+
+.setup-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #1a1a3e 0%, #0f0f1e 100%);
+    opacity: 0.8;
+}
+
+.setup-container {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    padding: 40px;
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.setup-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.game-title {
+    font-size: 4em;
+    font-weight: 200;
+    letter-spacing: 0.3em;
+    margin: 0;
+    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.game-subtitle {
+    font-size: 1.2em;
+    color: #94a3b8;
+    margin-top: 10px;
+    letter-spacing: 0.1em;
+}
+
+/* Bloc Selection */
+.bloc-selection {
+    margin-bottom: 40px;
+}
+
+.bloc-selection h2 {
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: 300;
+    margin-bottom: 30px;
+    color: #e2e8f0;
+}
+
+.bloc-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.bloc-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.bloc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.bloc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.bloc-card:hover::before {
+    opacity: 1;
+}
+
+.bloc-card.selected {
+    border-color: currentColor;
+    box-shadow: 0 0 30px currentColor;
+}
+
+.usa-card { color: #3b82f6; }
+.usa-card.selected { background: rgba(59, 130, 246, 0.1); }
+
+.eu-card { color: #10b981; }
+.eu-card.selected { background: rgba(16, 185, 129, 0.1); }
+
+.china-card { color: #ef4444; }
+.china-card.selected { background: rgba(239, 68, 68, 0.1); }
+
+.bloc-icon {
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.bloc-card h3 {
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+
+.bloc-description {
+    text-align: center;
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* Stats */
+.bloc-stats {
+    margin-top: 20px;
+}
+
+.stat {
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.6);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.stat-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    background: currentColor;
+    transition: width 0.5s ease;
+}
+
+/* Game Settings */
+.game-settings {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.game-settings h2 {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 300;
+    margin-bottom: 25px;
+    color: #e2e8f0;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.setting-item label {
+    color: #94a3b8;
+    font-size: 0.9em;
+}
+
+.setting-control {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.setting-control input[type="range"] {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+}
+
+.setting-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #3b82f6;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.setting-value {
+    min-width: 40px;
+    text-align: center;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Toggle Switch */
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: .4s;
+    border-radius: 26px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.toggle input:checked + .toggle-slider {
+    background-color: #3b82f6;
+}
+
+.toggle input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+/* Select Dropdown */
+select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Start Section */
+.start-section {
+    text-align: center;
+}
+
+.start-game-btn {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 18px 60px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+.start-game-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(59, 130, 246, 0.5);
+}
+
+.start-game-btn:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.game-info {
+    margin-top: 20px;
+    color: #94a3b8;
+    font-size: 0.9em;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+/* Hide setup screen when game starts */
+.setup-screen.hidden {
+    display: none;
+}
+</style>
+
+<!-- Setup Screen JavaScript -->
+<script>
+// Setup screen functionality
+(function() {
+    let selectedBloc = null;
+    let gameSettings = {
+        turnLimit: 50,
+        victoryPoints: 50,
+        aiOpponents: true,
+        gameSpeed: 'normal'
+    };
+    
+    // Get elements
+    const setupScreen = document.getElementById('setupScreen');
+    const blocCards = document.querySelectorAll('.bloc-card');
+    const startBtn = document.getElementById('startGameBtn');
+    const turnLimitSlider = document.getElementById('turnLimit');
+    const turnLimitValue = document.getElementById('turnLimitValue');
+    const victoryPointsSlider = document.getElementById('victoryPoints');
+    const victoryPointsValue = document.getElementById('victoryPointsValue');
+    const aiCheckbox = document.getElementById('aiOpponents');
+    const gameSpeedSelect = document.getElementById('gameSpeed');
+    
+    // Bloc selection
+    blocCards.forEach(card => {
+        card.addEventListener('click', () => {
+            // Remove previous selection
+            blocCards.forEach(c => c.classList.remove('selected'));
+            
+            // Add selection to clicked card
+            card.classList.add('selected');
+            selectedBloc = card.dataset.bloc;
+            
+            // Update start button
+            startBtn.disabled = false;
+            startBtn.textContent = `START AS ${selectedBloc}`;
+            
+            // Update button color based on bloc
+            switch(selectedBloc) {
+                case 'USA':
+                    startBtn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+                    break;
+                case 'EU':
+                    startBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                    break;
+                case 'CHINA':
+                    startBtn.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+                    break;
+            }
+        });
+    });
+    
+    // Settings controls
+    turnLimitSlider.addEventListener('input', (e) => {
+        gameSettings.turnLimit = parseInt(e.target.value);
+        turnLimitValue.textContent = gameSettings.turnLimit;
+    });
+    
+    victoryPointsSlider.addEventListener('input', (e) => {
+        gameSettings.victoryPoints = parseInt(e.target.value);
+        victoryPointsValue.textContent = gameSettings.victoryPoints;
+    });
+    
+    aiCheckbox.addEventListener('change', (e) => {
+        gameSettings.aiOpponents = e.target.checked;
+    });
+    
+    gameSpeedSelect.addEventListener('change', (e) => {
+        gameSettings.gameSpeed = e.target.value;
+    });
+    
+    // Start game button
+    startBtn.addEventListener('click', () => {
+        if (!selectedBloc) return;
+        
+        // Prepare game configuration
+        const gameConfig = {
+            playerBloc: selectedBloc,
+            ...gameSettings
+        };
+        
+        // Send configuration to server
+        if (window.gameWebSocket && window.gameWebSocket.readyState === WebSocket.OPEN) {
+            window.gameWebSocket.send(JSON.stringify({
+                type: 'start_game',
+                config: gameConfig
+            }));
+        }
+        
+        // Hide setup screen
+        setupScreen.classList.add('hidden');
+        
+        // Initialize player panel
+        if (typeof setPlayerPanel === 'function') {
+            setPlayerPanel(selectedBloc);
+        }
+        
+        // Store game config globally
+        window.gameConfig = gameConfig;
+        
+        console.log('Game started with config:', gameConfig);
+    });
+    
+    // Add some visual effects
+    blocCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            if (!card.classList.contains('selected')) {
+                card.style.transform = 'translateY(-5px)';
+            }
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            if (!card.classList.contains('selected')) {
+                card.style.transform = 'translateY(0)';
+            }
+        });
+    });
+})();
+</script>

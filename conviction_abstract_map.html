@@ -660,6 +660,289 @@
         .setup-screen.hidden {
             display: none;
         }
+
+        /* ===== POWER BALANCE INDICATOR ===== */
+        
+        /* Power Balance Container */
+        .power-balance-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            display: none; /* Hidden initially until game starts */
+        }
+
+        .power-balance-container.show {
+            display: block;
+        }
+
+        /* Header */
+        .power-balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .power-balance-header h3 {
+            margin: 0;
+            font-size: 1em;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: #94a3b8;
+        }
+
+        .victory-threshold {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .threshold-label {
+            color: #64748b;
+        }
+
+        .threshold-value {
+            color: #fbbf24;
+            font-weight: 500;
+        }
+
+        /* Power Balance Bar */
+        .power-balance-bar {
+            display: flex;
+            height: 60px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .balance-segment {
+            position: relative;
+            transition: all 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Segment backgrounds with gradients */
+        .usa-segment {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .eu-segment {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .china-segment {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        /* Segment content */
+        .segment-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bloc-name {
+            font-size: 0.8em;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .bloc-vp {
+            font-size: 1.2em;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        /* Animated stripes for leading bloc */
+        @keyframes moveStripes {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 40px 0;
+            }
+        }
+
+        .balance-segment.leading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.1) 10px,
+                rgba(255, 255, 255, 0.1) 20px
+            );
+            animation: moveStripes 1s linear infinite;
+        }
+
+        /* Victory indicator */
+        .balance-segment.near-victory {
+            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .balance-segment.near-victory .bloc-vp {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Details Section (Hidden by default) */
+        .power-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .power-details.show {
+            max-height: 300px;
+        }
+
+        .detail-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .usa-detail {
+            border-color: #3b82f6;
+        }
+
+        .eu-detail {
+            border-color: #10b981;
+        }
+
+        .china-detail {
+            border-color: #ef4444;
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-bloc {
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .usa-detail .detail-bloc { color: #3b82f6; }
+        .eu-detail .detail-bloc { color: #10b981; }
+        .china-detail .detail-bloc { color: #ef4444; }
+
+        .detail-total {
+            font-weight: 500;
+            color: #fbbf24;
+        }
+
+        .detail-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .detail-item.negative .detail-value {
+            color: #f87171;
+        }
+
+        .detail-label {
+            color: #64748b;
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        /* Toggle Button */
+        .toggle-details-btn {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #94a3b8;
+        }
+
+        .toggle-details-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon.rotate {
+            transform: rotate(180deg);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .power-balance-container {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            .balance-segment {
+                min-width: 0;
+            }
+            
+            .bloc-name {
+                font-size: 0.7em;
+            }
+            
+            .bloc-vp {
+                font-size: 1em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -822,6 +1105,143 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Power Balance Indicator -->
+    <div id="powerBalance" class="power-balance-container">
+        <div class="power-balance-header">
+            <h3>GLOBAL POWER BALANCE</h3>
+            <div class="victory-threshold">
+                <span class="threshold-label">Victory:</span>
+                <span class="threshold-value" id="victoryThreshold">50 VP</span>
+            </div>
+        </div>
+        
+        <div class="power-balance-bar">
+            <div class="balance-segment usa-segment" id="usaSegment">
+                <div class="segment-content">
+                    <span class="bloc-name">USA</span>
+                    <span class="bloc-vp" id="usaVP">15</span>
+                </div>
+            </div>
+            <div class="balance-segment eu-segment" id="euSegment">
+                <div class="segment-content">
+                    <span class="bloc-name">EU</span>
+                    <span class="bloc-vp" id="euVP">18</span>
+                </div>
+            </div>
+            <div class="balance-segment china-segment" id="chinaSegment">
+                <div class="segment-content">
+                    <span class="bloc-name">CHINA</span>
+                    <span class="bloc-vp" id="chinaVP">17</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="power-details" id="powerDetails">
+            <div class="detail-card usa-detail">
+                <div class="detail-header">
+                    <span class="detail-bloc">USA</span>
+                    <span class="detail-total" id="usaTotal">15 VP</span>
+                </div>
+                <div class="detail-breakdown">
+                    <div class="detail-item">
+                        <span class="detail-label">GDP</span>
+                        <span class="detail-value" id="usaGDP">5</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tech</span>
+                        <span class="detail-value" id="usaTech">3</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Military</span>
+                        <span class="detail-value" id="usaMilitary">4</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Culture</span>
+                        <span class="detail-value" id="usaCulture">2</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Cohesion</span>
+                        <span class="detail-value" id="usaCohesion">3</span>
+                    </div>
+                    <div class="detail-item negative">
+                        <span class="detail-label">Drag</span>
+                        <span class="detail-value" id="usaDrag">-2</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-card eu-detail">
+                <div class="detail-header">
+                    <span class="detail-bloc">EU</span>
+                    <span class="detail-total" id="euTotal">18 VP</span>
+                </div>
+                <div class="detail-breakdown">
+                    <div class="detail-item">
+                        <span class="detail-label">GDP</span>
+                        <span class="detail-value" id="euGDP">6</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tech</span>
+                        <span class="detail-value" id="euTech">2</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Military</span>
+                        <span class="detail-value" id="euMilitary">2</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Culture</span>
+                        <span class="detail-value" id="euCulture">5</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Cohesion</span>
+                        <span class="detail-value" id="euCohesion">4</span>
+                    </div>
+                    <div class="detail-item negative">
+                        <span class="detail-label">Drag</span>
+                        <span class="detail-value" id="euDrag">-1</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-card china-detail">
+                <div class="detail-header">
+                    <span class="detail-bloc">CHINA</span>
+                    <span class="detail-total" id="chinaTotal">17 VP</span>
+                </div>
+                <div class="detail-breakdown">
+                    <div class="detail-item">
+                        <span class="detail-label">GDP</span>
+                        <span class="detail-value" id="chinaGDP">7</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tech</span>
+                        <span class="detail-value" id="chinaTech">2</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Military</span>
+                        <span class="detail-value" id="chinaMilitary">3</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Culture</span>
+                        <span class="detail-value" id="chinaCulture">3</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Cohesion</span>
+                        <span class="detail-value" id="chinaCohesion">3</span>
+                    </div>
+                    <div class="detail-item negative">
+                        <span class="detail-label">Drag</span>
+                        <span class="detail-value" id="chinaDrag">-1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="toggle-details-btn" id="toggleDetails">
+            <span class="toggle-icon">▼</span>
+        </button>
     </div>
 
     <div class="header">
@@ -1259,6 +1679,14 @@
                 updateRegion(message.data);
             } else if (message.type === 'phase_update') {
                 updatePhase(message.data);
+            } else if (message.type === 'power_update') {
+                // Update power balance from server
+                if (message.data && message.data.power && window.powerBalance) {
+                    window.powerBalance.updatePower(message.data.power);
+                    if (message.data.victory_threshold) {
+                        window.powerBalance.setVictoryThreshold(message.data.victory_threshold);
+                    }
+                }
             } else if (message.regions) {
                 // Full state update
                 updateFullState(message);
@@ -1727,6 +2155,33 @@
                 totalGDP = data.blocs[playerBloc].gdp_tokens;
                 updateBudget();
             }
+            
+            // Update power balance if bloc data is available
+            if (data.blocs && window.powerBalance) {
+                const powerData = {};
+                data.blocs.forEach(bloc => {
+                    let name = bloc.name.toLowerCase();
+                    // Map game bloc names to frontend names
+                    if (name === 'red') name = 'usa';
+                    else if (name === 'blue') name = 'eu';
+                    
+                    if (['usa', 'eu', 'china'].includes(name)) {
+                        powerData[name] = {
+                            vp: bloc.victory_points || 10,
+                            gdp: bloc.gdp_tokens || 5,
+                            tech: bloc.scores?.tech_bonus || bloc.tech_level || 0,
+                            military: (bloc.military_posture || 0) * 2,
+                            culture: bloc.cultural_influence || 0,
+                            cohesion: bloc.scores?.cohesion || bloc.cohesion || 5,
+                            drag: bloc.scores?.effective_drag || bloc.regulatory_drag || 0
+                        };
+                    }
+                });
+                
+                if (Object.keys(powerData).length > 0) {
+                    window.powerBalance.updatePower(powerData);
+                }
+            }
         }
 
         // Initialize
@@ -1853,6 +2308,9 @@
                 setTimeout(() => {
                     setupScreen.classList.add('hidden');
                     
+                    // Show power balance indicator
+                    document.getElementById('powerBalance').classList.add('show');
+                    
                     // Initialize player panel with selected bloc
                     setPlayerPanel(selectedBloc);
                     
@@ -1863,6 +2321,193 @@
                 }, 500);
             }, 1500);
         });
+
+        // ===== POWER BALANCE FUNCTIONALITY =====
+        
+        // Power Balance functionality
+        class PowerBalanceIndicator {
+            constructor() {
+                this.container = document.getElementById('powerBalance');
+                this.segments = {
+                    usa: document.getElementById('usaSegment'),
+                    eu: document.getElementById('euSegment'),
+                    china: document.getElementById('chinaSegment')
+                };
+                this.vpDisplays = {
+                    usa: document.getElementById('usaVP'),
+                    eu: document.getElementById('euVP'),
+                    china: document.getElementById('chinaVP')
+                };
+                this.detailsSection = document.getElementById('powerDetails');
+                this.toggleBtn = document.getElementById('toggleDetails');
+                this.toggleIcon = this.toggleBtn.querySelector('.toggle-icon');
+                
+                this.victoryThreshold = 50;
+                this.currentPower = {
+                    usa: { vp: 15, gdp: 5, tech: 3, military: 4, culture: 2, cohesion: 3, drag: 2 },
+                    eu: { vp: 18, gdp: 6, tech: 2, military: 2, culture: 5, cohesion: 4, drag: 1 },
+                    china: { vp: 17, gdp: 7, tech: 2, military: 3, culture: 3, cohesion: 3, drag: 1 }
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                // Set up toggle button
+                this.toggleBtn.addEventListener('click', () => {
+                    this.detailsSection.classList.toggle('show');
+                    this.toggleIcon.classList.toggle('rotate');
+                });
+                
+                // Initial update
+                this.updateDisplay();
+            }
+            
+            updatePower(powerData) {
+                // Update power data from game state
+                this.currentPower = powerData;
+                this.updateDisplay();
+            }
+            
+            updateDisplay() {
+                const totalVP = this.currentPower.usa.vp + this.currentPower.eu.vp + this.currentPower.china.vp;
+                
+                // Update segments
+                const usaWidth = (this.currentPower.usa.vp / totalVP) * 100;
+                const euWidth = (this.currentPower.eu.vp / totalVP) * 100;
+                const chinaWidth = (this.currentPower.china.vp / totalVP) * 100;
+                
+                this.segments.usa.style.width = usaWidth + '%';
+                this.segments.eu.style.width = euWidth + '%';
+                this.segments.china.style.width = chinaWidth + '%';
+                
+                // Update VP displays
+                this.vpDisplays.usa.textContent = this.currentPower.usa.vp;
+                this.vpDisplays.eu.textContent = this.currentPower.eu.vp;
+                this.vpDisplays.china.textContent = this.currentPower.china.vp;
+                
+                // Find leader and check for near victory
+                this.updateLeaderStatus();
+                
+                // Update details
+                this.updateDetails();
+            }
+            
+            updateLeaderStatus() {
+                // Remove existing classes
+                Object.values(this.segments).forEach(segment => {
+                    segment.classList.remove('leading', 'near-victory');
+                });
+                
+                // Find leader
+                const powers = ['usa', 'eu', 'china'];
+                let leader = powers[0];
+                let maxVP = this.currentPower[leader].vp;
+                
+                powers.forEach(power => {
+                    if (this.currentPower[power].vp > maxVP) {
+                        leader = power;
+                        maxVP = this.currentPower[power].vp;
+                    }
+                });
+                
+                // Add leading class
+                this.segments[leader].classList.add('leading');
+                
+                // Check for near victory (within 10 points)
+                if (maxVP >= this.victoryThreshold - 10) {
+                    this.segments[leader].classList.add('near-victory');
+                }
+            }
+            
+            updateDetails() {
+                ['usa', 'eu', 'china'].forEach(bloc => {
+                    const data = this.currentPower[bloc];
+                    
+                    document.getElementById(`${bloc}Total`).textContent = `${data.vp} VP`;
+                    document.getElementById(`${bloc}GDP`).textContent = data.gdp;
+                    document.getElementById(`${bloc}Tech`).textContent = data.tech;
+                    document.getElementById(`${bloc}Military`).textContent = data.military;
+                    document.getElementById(`${bloc}Culture`).textContent = data.culture;
+                    document.getElementById(`${bloc}Cohesion`).textContent = data.cohesion;
+                    document.getElementById(`${bloc}Drag`).textContent = `-${data.drag}`;
+                });
+            }
+            
+            setVictoryThreshold(threshold) {
+                this.victoryThreshold = threshold;
+                document.getElementById('victoryThreshold').textContent = `${threshold} VP`;
+            }
+            
+            // Animate changes
+            animateChange(bloc, oldVP, newVP) {
+                const startTime = Date.now();
+                const duration = 500;
+                
+                const animate = () => {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Easing function
+                    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+                    const easedProgress = easeOutCubic(progress);
+                    
+                    const currentVP = Math.round(oldVP + (newVP - oldVP) * easedProgress);
+                    this.vpDisplays[bloc].textContent = currentVP;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        this.updateDisplay();
+                    }
+                };
+                
+                animate();
+            }
+        }
+
+        // Initialize power balance indicator
+        let powerBalance;
+        window.powerBalance = powerBalance; // Make it globally accessible for testing
+        
+        // Wait for page to load before initializing power balance
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                powerBalance = new PowerBalanceIndicator();
+                window.powerBalance = powerBalance;
+            });
+        } else {
+            powerBalance = new PowerBalanceIndicator();
+            window.powerBalance = powerBalance;
+        }
+
+        // Testing functions for power balance (accessible via browser console)
+        window.testPowerUpdate = function() {
+            if (window.powerBalance) {
+                window.powerBalance.updatePower({
+                    usa: { vp: 25, gdp: 8, tech: 5, military: 6, culture: 3, cohesion: 4, drag: 1 },
+                    eu: { vp: 30, gdp: 10, tech: 3, military: 4, culture: 8, cohesion: 5, drag: 0 },
+                    china: { vp: 20, gdp: 12, tech: 4, military: 5, culture: 2, cohesion: 2, drag: 3 }
+                });
+                console.log('Power balance updated with test data');
+            }
+        };
+        
+        window.testPowerAnimation = function() {
+            if (window.powerBalance) {
+                const oldUSA = window.powerBalance.currentPower.usa.vp;
+                window.powerBalance.currentPower.usa.vp = oldUSA + 10;
+                window.powerBalance.animateChange('usa', oldUSA, window.powerBalance.currentPower.usa.vp);
+                console.log(`Animated USA power from ${oldUSA} to ${window.powerBalance.currentPower.usa.vp}`);
+            }
+        };
+        
+        window.testVictoryThreshold = function(threshold = 75) {
+            if (window.powerBalance) {
+                window.powerBalance.setVictoryThreshold(threshold);
+                console.log(`Victory threshold set to ${threshold}`);
+            }
+        };
 
     </script>
 </body>
