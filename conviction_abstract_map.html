@@ -57,96 +57,92 @@
             height: auto;
         }
 
-        /* Control Panel Styles */
+        /* Hide all control panels by default */
         .control-panel {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            max-height: 50vh;
-            overflow-y: auto;
+            display: none;
         }
 
-        .control-panel.active {
-            transform: translateY(0);
-        }
-
-        .control-toggle {
+        /* Compact sidebar panel */
+        .player-panel-sidebar {
             position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 10px 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            right: 20px;
+            top: 100px;
+            width: 320px;
+            max-height: calc(100vh - 120px);
+            background: rgba(26, 26, 46, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
 
-        .control-toggle:hover {
-            background: rgba(255, 255, 255, 0.1);
+        /* Draggable header */
+        .panel-header {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            padding: 15px;
+            cursor: move;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
+        .panel-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 300;
+            letter-spacing: 0.1em;
         }
 
-        .player-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .panel-controls {
+            display: flex;
+            gap: 10px;
         }
 
-        .player-header {
+        .panel-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
+            justify-content: center;
         }
 
-        .player-name {
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
-        .gdp-display {
+        .panel-btn:hover {
             background: rgba(255, 255, 255, 0.1);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
-        .usa-section .player-name { color: #3b82f6; }
-        .eu-section .player-name { color: #10b981; }
-        .china-section .player-name { color: #ef4444; }
+        /* Panel content */
+        .panel-content {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(100vh - 220px);
+        }
 
-        /* Budget Controls */
+        /* Compact budget section */
         .budget-section {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .budget-title {
-            font-size: 1.1em;
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
-            opacity: 0.8;
         }
 
         .budget-item {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .budget-label {
@@ -154,17 +150,17 @@
             justify-content: space-between;
             margin-bottom: 5px;
             font-size: 0.9em;
-            opacity: 0.8;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .budget-slider {
             width: 100%;
             height: 6px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            outline: none;
             -webkit-appearance: none;
             appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
         }
 
         .budget-slider::-webkit-slider-thumb {
@@ -172,84 +168,126 @@
             appearance: none;
             width: 16px;
             height: 16px;
-            border-radius: 50%;
             background: #fff;
+            border-radius: 50%;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .budget-slider::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #fff;
-            cursor: pointer;
-            border: none;
+        .budget-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* Card Selection */
+        /* Card selection */
         .card-section {
-            margin-bottom: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
         }
 
-        .card-select {
+        .card-dropdown {
             width: 100%;
             padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
+            border-radius: 8px;
             color: #fff;
             font-size: 0.9em;
-            cursor: pointer;
+            margin-bottom: 15px;
         }
 
-        .card-select option {
+        .card-dropdown option {
             background: #1a1a2e;
         }
 
-        /* Submit Button */
         .submit-btn {
             width: 100%;
             padding: 12px;
             border: none;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
             letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
         }
 
-        .usa-section .submit-btn {
+        /* Bloc-specific colors */
+        .usa-panel .panel-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        }
+
+        .usa-panel .submit-btn {
             background: #3b82f6;
             color: white;
         }
 
-        .eu-section .submit-btn {
+        .usa-panel .submit-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .eu-panel .panel-header {
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+        }
+
+        .eu-panel .submit-btn {
             background: #10b981;
             color: white;
         }
 
-        .china-section .submit-btn {
+        .eu-panel .submit-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .china-panel .panel-header {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+        }
+
+        .china-panel .submit-btn {
             background: #ef4444;
             color: white;
         }
 
-        .submit-btn:hover {
+        .china-panel .submit-btn:hover {
+            background: #dc2626;
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
         }
 
-        .submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .gdp-display {
+            font-size: 1.1em;
+            color: #fbbf24;
+        }
+
+        /* Minimized state */
+        .panel-minimized {
+            width: auto;
+            height: auto;
+        }
+
+        .panel-minimized .panel-content {
+            display: none;
+        }
+
+        .panel-minimized .panel-header {
+            border-bottom: none;
+        }
+
+        /* Hide other players' panels */
+        .hidden-panel {
+            display: none;
         }
 
         /* Phase indicator */
         .phase-indicator {
             position: fixed;
             top: 80px;
-            right: 20px;
+            left: 20px;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             padding: 15px 25px;
@@ -262,9 +300,530 @@
             color: #60a5fa;
             font-weight: 600;
         }
+
+        /* Setup Screen Styles */
+        .setup-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f0f1e;
+            overflow-y: auto;
+        }
+
+        .setup-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a1a3e 0%, #0f0f1e 100%);
+            opacity: 0.8;
+        }
+
+        .setup-container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            padding: 40px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Setup Header */
+        .setup-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .game-title {
+            font-size: 4em;
+            font-weight: 200;
+            letter-spacing: 0.3em;
+            margin: 0;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .game-subtitle {
+            font-size: 1.2em;
+            color: #94a3b8;
+            margin-top: 10px;
+            letter-spacing: 0.1em;
+        }
+
+        /* Bloc Selection */
+        .bloc-selection {
+            margin-bottom: 40px;
+        }
+
+        .bloc-selection h2 {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 300;
+            margin-bottom: 30px;
+            color: #e2e8f0;
+        }
+
+        .bloc-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .bloc-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bloc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .bloc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .bloc-card:hover::before {
+            opacity: 1;
+        }
+
+        .bloc-card.selected {
+            border-color: currentColor;
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        .usa-card { color: #3b82f6; }
+        .usa-card.selected { background: rgba(59, 130, 246, 0.1); }
+
+        .eu-card { color: #10b981; }
+        .eu-card.selected { background: rgba(16, 185, 129, 0.1); }
+
+        .china-card { color: #ef4444; }
+        .china-card.selected { background: rgba(239, 68, 68, 0.1); }
+
+        .bloc-icon {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .bloc-card h3 {
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .bloc-description {
+            text-align: center;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Bloc Stats */
+        .bloc-stats {
+            margin-top: 20px;
+        }
+
+        .stat {
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.6);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: currentColor;
+            transition: width 0.5s ease;
+        }
+
+        /* Game Settings */
+        .game-settings {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .game-settings h2 {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 300;
+            margin-bottom: 25px;
+            color: #e2e8f0;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .setting-item label {
+            color: #94a3b8;
+            font-size: 0.9em;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .setting-control input[type="range"] {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .setting-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #3b82f6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .setting-value {
+            min-width: 40px;
+            text-align: center;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            border-radius: 26px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .toggle input:checked + .toggle-slider {
+            background-color: #3b82f6;
+        }
+
+        .toggle input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Setup Select Dropdown */
+        .setting-control select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .setting-control select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        /* Start Section */
+        .start-section {
+            text-align: center;
+        }
+
+        .start-game-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            padding: 18px 60px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .start-game-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.5);
+        }
+
+        .start-game-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .game-info {
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 0.9em;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Hide setup screen when game starts */
+        .setup-screen.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Setup Screen -->
+    <div id="setupScreen" class="setup-screen">
+        <div class="setup-background"></div>
+        
+        <div class="setup-container">
+            <div class="setup-header">
+                <h1 class="game-title">CONVICTION 2040</h1>
+                <p class="game-subtitle">The Three-Bloc Geopolitical Strategy Game</p>
+            </div>
+            
+            <div class="setup-content">
+                <!-- Bloc Selection -->
+                <div class="bloc-selection">
+                    <h2>Choose Your Bloc</h2>
+                    <div class="bloc-options">
+                        <div class="bloc-card usa-card" data-bloc="USA">
+                            <div class="bloc-icon">🇺🇸</div>
+                            <h3>USA</h3>
+                            <p class="bloc-description">
+                                <strong>Strengths:</strong> Military & Technology<br>
+                                <strong>Strategy:</strong> Aggressive expansion
+                            </p>
+                            <div class="bloc-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Military</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Tech</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Culture</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bloc-card eu-card" data-bloc="EU">
+                            <div class="bloc-icon">🇪🇺</div>
+                            <h3>EU</h3>
+                            <p class="bloc-description">
+                                <strong>Strengths:</strong> Diplomacy & Culture<br>
+                                <strong>Strategy:</strong> Coalition building
+                            </p>
+                            <div class="bloc-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Military</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Tech</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Culture</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 95%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bloc-card china-card" data-bloc="CHINA">
+                            <div class="bloc-icon">🇨🇳</div>
+                            <h3>CHINA</h3>
+                            <p class="bloc-description">
+                                <strong>Strengths:</strong> Infrastructure & Economy<br>
+                                <strong>Strategy:</strong> Long-term development
+                            </p>
+                            <div class="bloc-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Military</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Tech</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Culture</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Game Settings -->
+                <div class="game-settings">
+                    <h2>Game Settings</h2>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label for="turnLimit">Turn Limit</label>
+                            <div class="setting-control">
+                                <input type="range" id="turnLimit" min="10" max="100" value="50" step="10">
+                                <span id="turnLimitValue" class="setting-value">50</span>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label for="victoryPoints">Victory Points to Win</label>
+                            <div class="setting-control">
+                                <input type="range" id="victoryPoints" min="30" max="100" value="50" step="10">
+                                <span id="victoryPointsValue" class="setting-value">50</span>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label for="aiOpponents">AI Opponents</label>
+                            <div class="setting-control">
+                                <label class="toggle">
+                                    <input type="checkbox" id="aiOpponents" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label for="gameSpeed">Game Speed</label>
+                            <div class="setting-control">
+                                <select id="gameSpeed">
+                                    <option value="slow">Slow (60s turns)</option>
+                                    <option value="normal" selected>Normal (30s turns)</option>
+                                    <option value="fast">Fast (15s turns)</option>
+                                    <option value="unlimited">Unlimited</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Start Button -->
+                <div class="start-section">
+                    <button id="startGameBtn" class="start-game-btn" disabled>
+                        SELECT A BLOC TO BEGIN
+                    </button>
+                    <p class="game-info">
+                        Balance territorial control, technological advancement, and diplomatic relationships while managing the friction that comes with rapid change.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="header">
         <h1 class="title">CONVICTION 2040</h1>
     </div>
@@ -279,256 +838,81 @@
         </div>
     </div>
 
-    <div class="control-toggle" onclick="toggleControls()">
-        <span id="toggleText">Show Controls ▲</span>
-    </div>
-
-    <div class="control-panel" id="controlPanel">
-        <div class="controls-grid">
-            <!-- USA Controls -->
-            <div class="player-section usa-section">
-                <div class="player-header">
-                    <div class="player-name">USA</div>
-                    <div class="gdp-display">💰 <span id="usaGdp">10</span> GDP</div>
-                </div>
-
-                <div class="budget-section">
-                    <div class="budget-title">Budget Allocation</div>
-                    
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Military</span>
-                            <span id="usaMilitaryVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
-                               id="usaMilitary" onchange="updateBudget('usa', 'Military')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Technology</span>
-                            <span id="usaTechnologyVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
-                               id="usaTechnology" onchange="updateBudget('usa', 'Technology')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Culture</span>
-                            <span id="usaCultureVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
-                               id="usaCulture" onchange="updateBudget('usa', 'Culture')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Infrastructure</span>
-                            <span id="usaInfrastructureVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
-                               id="usaInfrastructure" onchange="updateBudget('usa', 'Infrastructure')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Diplomacy</span>
-                            <span id="usaDiplomacyVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="10" value="0" class="budget-slider" 
-                               id="usaDiplomacy" onchange="updateBudget('usa', 'Diplomacy')">
-                    </div>
-
-                    <div style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">
-                        Remaining: <span id="usaRemaining">10</span>
-                    </div>
-                </div>
-
-                <div class="card-section">
-                    <div class="budget-title">Action Card</div>
-                    <select class="card-select" id="usaCard">
-                        <option value="">Select a card...</option>
-                        <option value="CYBER_ESPIONAGE">Cyber Espionage - Steal tech</option>
-                        <option value="TARIFF_HIKE">Tariff Hike - Reduce opponent GDP</option>
-                        <option value="PROXY_ARMS">Proxy Arms - Boost military</option>
-                        <option value="STANDARDS_PUSH">Standards Push - Increase drag</option>
-                        <option value="DISINFORMATION">Disinformation - Reduce cohesion</option>
-                        <option value="COUNTER_INTEL">Counter Intel - Boost trust</option>
-                        <option value="TRADE_DEAL">Trade Deal - Boost economy</option>
-                        <option value="AID_RECONSTRUCTION">Aid/Reconstruction - Boost influence</option>
-                        <option value="LOBBYING_BLITZ">Lobbying Blitz - Reduce drag</option>
-                        <option value="CONTENT_MODERATION">Content Moderation - Boost cohesion</option>
-                    </select>
-                </div>
-
-                <button class="submit-btn" onclick="submitTurn('USA')" id="usaSubmit">
-                    Submit Turn
-                </button>
+    <!-- Player Control Sidebar -->
+    <div id="playerPanel" class="player-panel-sidebar usa-panel">
+        <div class="panel-header">
+            <h3>USA COMMAND</h3>
+            <div class="panel-controls">
+                <button class="panel-btn minimize-btn" title="Minimize">−</button>
+                <button class="panel-btn close-btn" title="Hide">×</button>
             </div>
-
-            <!-- EU Controls -->
-            <div class="player-section eu-section">
-                <div class="player-header">
-                    <div class="player-name">EU</div>
-                    <div class="gdp-display">💰 <span id="euGdp">8</span> GDP</div>
+        </div>
+        
+        <div class="panel-content">
+            <div class="budget-section">
+                <div class="budget-header">
+                    <h4>Budget Allocation</h4>
+                    <span class="gdp-display">GDP: <span id="gdpRemaining">10</span></span>
                 </div>
-
-                <div class="budget-section">
-                    <div class="budget-title">Budget Allocation</div>
-                    
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Military</span>
-                            <span id="euMilitaryVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
-                               id="euMilitary" onchange="updateBudget('eu', 'Military')">
+                
+                <div class="budget-item">
+                    <div class="budget-label">
+                        <span>Military</span>
+                        <span id="militaryValue">0</span>
                     </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Technology</span>
-                            <span id="euTechnologyVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
-                               id="euTechnology" onchange="updateBudget('eu', 'Technology')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Culture</span>
-                            <span id="euCultureVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
-                               id="euCulture" onchange="updateBudget('eu', 'Culture')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Infrastructure</span>
-                            <span id="euInfrastructureVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
-                               id="euInfrastructure" onchange="updateBudget('eu', 'Infrastructure')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Diplomacy</span>
-                            <span id="euDiplomacyVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="8" value="0" class="budget-slider" 
-                               id="euDiplomacy" onchange="updateBudget('eu', 'Diplomacy')">
-                    </div>
-
-                    <div style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">
-                        Remaining: <span id="euRemaining">8</span>
-                    </div>
+                    <input type="range" class="budget-slider" id="militarySlider" min="0" max="10" value="0">
                 </div>
-
-                <div class="card-section">
-                    <div class="budget-title">Action Card</div>
-                    <select class="card-select" id="euCard">
-                        <option value="">Select a card...</option>
-                        <option value="CYBER_ESPIONAGE">Cyber Espionage - Steal tech</option>
-                        <option value="TARIFF_HIKE">Tariff Hike - Reduce opponent GDP</option>
-                        <option value="PROXY_ARMS">Proxy Arms - Boost military</option>
-                        <option value="STANDARDS_PUSH">Standards Push - Increase drag</option>
-                        <option value="DISINFORMATION">Disinformation - Reduce cohesion</option>
-                        <option value="COUNTER_INTEL">Counter Intel - Boost trust</option>
-                        <option value="TRADE_DEAL">Trade Deal - Boost economy</option>
-                        <option value="AID_RECONSTRUCTION">Aid/Reconstruction - Boost influence</option>
-                        <option value="LOBBYING_BLITZ">Lobbying Blitz - Reduce drag</option>
-                        <option value="CONTENT_MODERATION">Content Moderation - Boost cohesion</option>
-                    </select>
+                
+                <div class="budget-item">
+                    <div class="budget-label">
+                        <span>Technology</span>
+                        <span id="techValue">0</span>
+                    </div>
+                    <input type="range" class="budget-slider" id="techSlider" min="0" max="10" value="0">
                 </div>
-
-                <button class="submit-btn" onclick="submitTurn('EU')" id="euSubmit">
-                    Submit Turn
-                </button>
+                
+                <div class="budget-item">
+                    <div class="budget-label">
+                        <span>Culture</span>
+                        <span id="cultureValue">0</span>
+                    </div>
+                    <input type="range" class="budget-slider" id="cultureSlider" min="0" max="10" value="0">
+                </div>
+                
+                <div class="budget-item">
+                    <div class="budget-label">
+                        <span>Infrastructure</span>
+                        <span id="infraValue">0</span>
+                    </div>
+                    <input type="range" class="budget-slider" id="infraSlider" min="0" max="10" value="0">
+                </div>
+                
+                <div class="budget-item">
+                    <div class="budget-label">
+                        <span>Diplomacy</span>
+                        <span id="diplomacyValue">0</span>
+                    </div>
+                    <input type="range" class="budget-slider" id="diplomacySlider" min="0" max="10" value="0">
+                </div>
             </div>
-
-            <!-- China Controls -->
-            <div class="player-section china-section">
-                <div class="player-header">
-                    <div class="player-name">China</div>
-                    <div class="gdp-display">💰 <span id="chinaGdp">12</span> GDP</div>
-                </div>
-
-                <div class="budget-section">
-                    <div class="budget-title">Budget Allocation</div>
-                    
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Military</span>
-                            <span id="chinaMilitaryVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
-                               id="chinaMilitary" onchange="updateBudget('china', 'Military')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Technology</span>
-                            <span id="chinaTechnologyVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
-                               id="chinaTechnology" onchange="updateBudget('china', 'Technology')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Culture</span>
-                            <span id="chinaCultureVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
-                               id="chinaCulture" onchange="updateBudget('china', 'Culture')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Infrastructure</span>
-                            <span id="chinaInfrastructureVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
-                               id="chinaInfrastructure" onchange="updateBudget('china', 'Infrastructure')">
-                    </div>
-
-                    <div class="budget-item">
-                        <div class="budget-label">
-                            <span>Diplomacy</span>
-                            <span id="chinaDiplomacyVal">0</span>
-                        </div>
-                        <input type="range" min="0" max="12" value="0" class="budget-slider" 
-                               id="chinaDiplomacy" onchange="updateBudget('china', 'Diplomacy')">
-                    </div>
-
-                    <div style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">
-                        Remaining: <span id="chinaRemaining">12</span>
-                    </div>
-                </div>
-
-                <div class="card-section">
-                    <div class="budget-title">Action Card</div>
-                    <select class="card-select" id="chinaCard">
-                        <option value="">Select a card...</option>
-                        <option value="CYBER_ESPIONAGE">Cyber Espionage - Steal tech</option>
-                        <option value="TARIFF_HIKE">Tariff Hike - Reduce opponent GDP</option>
-                        <option value="PROXY_ARMS">Proxy Arms - Boost military</option>
-                        <option value="STANDARDS_PUSH">Standards Push - Increase drag</option>
-                        <option value="DISINFORMATION">Disinformation - Reduce cohesion</option>
-                        <option value="COUNTER_INTEL">Counter Intel - Boost trust</option>
-                        <option value="TRADE_DEAL">Trade Deal - Boost economy</option>
-                        <option value="AID_RECONSTRUCTION">Aid/Reconstruction - Boost influence</option>
-                        <option value="LOBBYING_BLITZ">Lobbying Blitz - Reduce drag</option>
-                        <option value="CONTENT_MODERATION">Content Moderation - Boost cohesion</option>
-                    </select>
-                </div>
-
-                <button class="submit-btn" onclick="submitTurn('China')" id="chinaSubmit">
-                    Submit Turn
-                </button>
+            
+            <div class="card-section">
+                <h4>Action Card</h4>
+                <select class="card-dropdown" id="actionCard">
+                    <option value="">Select a card...</option>
+                    <option value="CYBER_ESPIONAGE">Cyber Espionage</option>
+                    <option value="TARIFF_HIKE">Tariff Hike</option>
+                    <option value="PROXY_ARMS">Proxy Arms</option>
+                    <option value="STANDARDS_PUSH">Standards Push</option>
+                    <option value="DISINFORMATION">Disinformation</option>
+                    <option value="COUNTER_INTEL">Counter Intelligence</option>
+                    <option value="TRADE_DEAL">Trade Deal</option>
+                    <option value="AID_RECONSTRUCTION">Aid & Reconstruction</option>
+                    <option value="LOBBYING_BLITZ">Lobbying Blitz</option>
+                    <option value="CONTENT_MODERATION">Content Moderation</option>
+                </select>
+                
+                <button class="submit-btn" id="submitTurn">SUBMIT TURN</button>
             </div>
         </div>
     </div>
@@ -1065,187 +1449,421 @@
         // Connect when page loads
         connectWebSocket();
         
-        // ===== PLAYER CONTROL FUNCTIONS =====
+        // ===== SIDEBAR PANEL FUNCTIONS =====
         
-        // Track game state
-        const gameState = {
-            USA: { gdp: 10, budget: {}, card: null, submitted: false },
-            EU: { gdp: 8, budget: {}, card: null, submitted: false },
-            China: { gdp: 12, budget: {}, card: null, submitted: false },
-            phase: 'Planning',
-            turn: 1
-        };
-        
-        // Toggle control panel
-        function toggleControls() {
-            const panel = document.getElementById('controlPanel');
-            const toggle = document.getElementById('toggleText');
+        // Panel drag functionality
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        const playerPanel = document.getElementById('playerPanel');
+        const panelHeader = playerPanel.querySelector('.panel-header');
+        const minimizeBtn = playerPanel.querySelector('.minimize-btn');
+        const closeBtn = playerPanel.querySelector('.close-btn');
+
+        // Set player's bloc (this will be set during game setup)
+        let playerBloc = 'USA';
+
+        function setPlayerPanel(bloc) {
+            playerBloc = bloc;
+            // Remove all bloc classes
+            playerPanel.classList.remove('usa-panel', 'eu-panel', 'china-panel');
             
-            if (panel.classList.contains('active')) {
-                panel.classList.remove('active');
-                toggle.textContent = 'Show Controls ▲';
-            } else {
-                panel.classList.add('active');
-                toggle.textContent = 'Hide Controls ▼';
+            // Add appropriate class and update header
+            switch(bloc.toUpperCase()) {
+                case 'USA':
+                    playerPanel.classList.add('usa-panel');
+                    panelHeader.querySelector('h3').textContent = 'USA COMMAND';
+                    totalGDP = 10;
+                    break;
+                case 'EU':
+                    playerPanel.classList.add('eu-panel');
+                    panelHeader.querySelector('h3').textContent = 'EU COMMAND';
+                    totalGDP = 8;
+                    break;
+                case 'CHINA':
+                    playerPanel.classList.add('china-panel');
+                    panelHeader.querySelector('h3').textContent = 'CHINA COMMAND';
+                    totalGDP = 12;
+                    break;
+            }
+            updateBudget();
+        }
+
+        // Drag functionality
+        panelHeader.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === panelHeader || e.target.parentElement === panelHeader) {
+                isDragging = true;
             }
         }
-        
-        // Update budget allocation
-        function updateBudget(bloc, category) {
-            const blocName = bloc.toUpperCase();
-            const slider = document.getElementById(bloc + category);
-            const valueDisplay = document.getElementById(bloc + category + 'Val');
-            const remainingDisplay = document.getElementById(bloc + 'Remaining');
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                playerPanel.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+
+        // Minimize/maximize functionality
+        minimizeBtn.addEventListener('click', () => {
+            playerPanel.classList.toggle('panel-minimized');
+            minimizeBtn.textContent = playerPanel.classList.contains('panel-minimized') ? '+' : '−';
+        });
+
+        // Close functionality (hide panel)
+        closeBtn.addEventListener('click', () => {
+            playerPanel.style.display = 'none';
+            // Add a floating button to restore the panel
+            createRestoreButton();
+        });
+
+        function createRestoreButton() {
+            const restoreBtn = document.createElement('button');
+            restoreBtn.className = 'restore-panel-btn';
+            restoreBtn.textContent = '☰';
+            restoreBtn.style.cssText = `
+                position: fixed;
+                right: 20px;
+                top: 100px;
+                width: 40px;
+                height: 40px;
+                background: rgba(26, 26, 46, 0.9);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                color: white;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 999;
+            `;
             
-            const value = parseInt(slider.value);
-            valueDisplay.textContent = value;
-            
-            // Calculate total spent
-            const categories = ['Military', 'Technology', 'Culture', 'Infrastructure', 'Diplomacy'];
-            let totalSpent = 0;
-            
-            categories.forEach(cat => {
-                const catSlider = document.getElementById(bloc + cat);
-                totalSpent += parseInt(catSlider.value);
+            restoreBtn.addEventListener('click', () => {
+                playerPanel.style.display = 'block';
+                restoreBtn.remove();
             });
             
-            const maxGdp = gameState[blocName].gdp;
-            
-            // Check if over budget
-            if (totalSpent > maxGdp) {
-                // Reduce this slider to fit budget
-                const excess = totalSpent - maxGdp;
-                slider.value = Math.max(0, value - excess);
-                valueDisplay.textContent = slider.value;
-                totalSpent = maxGdp;
-            }
-            
-            // Update remaining display
-            remainingDisplay.textContent = maxGdp - totalSpent;
-            
-            // Store budget in game state
-            if (!gameState[blocName].budget) {
-                gameState[blocName].budget = {};
-            }
-            gameState[blocName].budget[category.toLowerCase()] = parseInt(slider.value);
+            document.body.appendChild(restoreBtn);
         }
-        
-        // Submit turn for a bloc
-        function submitTurn(bloc) {
-            const cardSelect = document.getElementById(bloc.toLowerCase() + 'Card');
-            const submitBtn = document.getElementById(bloc.toLowerCase() + 'Submit');
+
+        // Budget slider functionality
+        const sliders = {
+            military: document.getElementById('militarySlider'),
+            tech: document.getElementById('techSlider'),
+            culture: document.getElementById('cultureSlider'),
+            infra: document.getElementById('infraSlider'),
+            diplomacy: document.getElementById('diplomacySlider')
+        };
+
+        const values = {
+            military: document.getElementById('militaryValue'),
+            tech: document.getElementById('techValue'),
+            culture: document.getElementById('cultureValue'),
+            infra: document.getElementById('infraValue'),
+            diplomacy: document.getElementById('diplomacyValue')
+        };
+
+        const gdpDisplay = document.getElementById('gdpRemaining');
+        let totalGDP = 10; // This will be updated from game state
+
+        function updateBudget() {
+            let spent = 0;
             
-            // Validate card selection
-            if (!cardSelect.value) {
-                alert(bloc + ' must select an action card!');
+            for (const [key, slider] of Object.entries(sliders)) {
+                const value = parseInt(slider.value);
+                values[key].textContent = value;
+                spent += value;
+            }
+            
+            const remaining = totalGDP - spent;
+            gdpDisplay.textContent = remaining;
+            
+            // Disable sliders if budget exceeded
+            if (remaining < 0) {
+                gdpDisplay.style.color = '#ef4444';
+            } else {
+                gdpDisplay.style.color = '#fbbf24';
+            }
+        }
+
+        // Add event listeners to all sliders
+        for (const slider of Object.values(sliders)) {
+            slider.addEventListener('input', updateBudget);
+        }
+
+        // Submit button functionality
+        document.getElementById('submitTurn').addEventListener('click', () => {
+            const budget = {};
+            for (const [key, slider] of Object.entries(sliders)) {
+                budget[key] = parseInt(slider.value);
+            }
+            
+            const actionCard = document.getElementById('actionCard').value;
+            
+            if (!actionCard) {
+                alert('Please select an action card!');
                 return;
             }
             
-            // Calculate total budget spent
-            const categories = ['Military', 'Technology', 'Culture', 'Infrastructure', 'Diplomacy'];
-            let totalSpent = 0;
-            const budget = {};
+            const totalSpent = Object.values(budget).reduce((sum, val) => sum + val, 0);
+            if (totalSpent > totalGDP) {
+                alert('Budget exceeds available GDP!');
+                return;
+            }
             
-            categories.forEach(cat => {
-                const value = parseInt(document.getElementById(bloc.toLowerCase() + cat).value);
-                budget[cat.toLowerCase()] = value;
-                totalSpent += value;
-            });
-            
-            // Store submission
-            gameState[bloc].card = cardSelect.value;
-            gameState[bloc].budget = budget;
-            gameState[bloc].submitted = true;
-            
-            // Disable controls
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitted ✓';
-            
-            // Send to server if connected
+            // Send to game via WebSocket
             if (ws && ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({
                     action: 'submit_turn',
-                    bloc: bloc,
+                    bloc: playerBloc,
                     budget: budget,
-                    card: cardSelect.value
+                    card: actionCard
                 }));
+                
+                // Disable submit button
+                document.getElementById('submitTurn').disabled = true;
+                document.getElementById('submitTurn').textContent = 'SUBMITTED ✓';
             }
             
-            // Check if all players submitted
-            if (gameState.USA.submitted && gameState.EU.submitted && gameState.China.submitted) {
-                setTimeout(() => {
-                    alert('All players have submitted! Moving to Resolution Phase...');
-                    resetTurnSubmissions();
-                }, 500);
-            }
+            console.log('Turn submitted:', { bloc: playerBloc, budget, card: actionCard });
+        });
+
+        // Enhanced WebSocket connection with player assignment
+        function connectWebSocket() {
+            const wsUrl = `ws://${window.location.host}/ws`;
+            ws = new WebSocket(wsUrl);
+            
+            ws.onopen = () => {
+                updateStatus('Connected to game server', '#10b981');
+                // Request player assignment from server
+                ws.send(JSON.stringify({ type: 'get_player_bloc' }));
+            };
+            
+            ws.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data);
+                    
+                    if (message.type === 'player_bloc') {
+                        setPlayerPanel(message.bloc);
+                        totalGDP = message.gdp;
+                        updateBudget();
+                    } else if (message.type === 'game_started') {
+                        // Handle game start confirmation
+                        console.log('Game started successfully:', message.data);
+                        // Update any initial game state if provided
+                        if (message.data && message.data.initial_state) {
+                            updateGameState(message.data.initial_state);
+                        }
+                    } else if (message.type === 'player_assigned') {
+                        // Confirm player bloc assignment
+                        window.playerBloc = message.bloc;
+                        console.log('Player assigned to:', message.bloc);
+                    } else {
+                        handleGameUpdate(message);
+                    }
+                } catch (e) {
+                    console.error('WebSocket message error:', e);
+                }
+            };
+            
+            ws.onclose = () => {
+                updateStatus('Disconnected from server', '#ef4444');
+                setTimeout(connectWebSocket, 3000);
+            };
+            
+            ws.onerror = (error) => {
+                updateStatus('Connection error', '#ef4444');
+            };
         }
-        
-        // Reset turn submissions
-        function resetTurnSubmissions() {
-            ['USA', 'EU', 'China'].forEach(bloc => {
-                gameState[bloc].submitted = false;
-                
-                // Reset UI
-                const submitBtn = document.getElementById(bloc.toLowerCase() + 'Submit');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Turn';
-                
-                // Reset sliders
-                const categories = ['Military', 'Technology', 'Culture', 'Infrastructure', 'Diplomacy'];
-                categories.forEach(cat => {
-                    const slider = document.getElementById(bloc.toLowerCase() + cat);
-                    slider.value = '0';
-                    const valueDisplay = document.getElementById(bloc.toLowerCase() + cat + 'Val');
-                    valueDisplay.textContent = '0';
-                });
-                
-                // Reset card selection
-                document.getElementById(bloc.toLowerCase() + 'Card').value = '';
-                
-                // Update remaining display
-                document.getElementById(bloc.toLowerCase() + 'Remaining').textContent = gameState[bloc].gdp;
-            });
-        }
-        
+
         // Handle game state updates from server
         function updateGameState(data) {
-            if (data.blocs) {
-                // Update GDP displays
-                Object.entries(data.blocs).forEach(([blocName, blocData]) => {
-                    const gdpDisplay = document.getElementById(blocName.toLowerCase() + 'Gdp');
-                    if (gdpDisplay && blocData.gdp_tokens !== undefined) {
-                        gdpDisplay.textContent = blocData.gdp_tokens;
-                        gameState[blocName].gdp = blocData.gdp_tokens;
-                    }
-                });
-            }
-            
             if (data.turn) {
                 document.getElementById('turnNum').textContent = data.turn;
-                gameState.turn = data.turn;
             }
             
             if (data.phase) {
                 document.getElementById('phaseText').textContent = data.phase;
-                gameState.phase = data.phase;
                 
-                // Reset submissions on new planning phase
+                // Reset controls on new planning phase
                 if (data.phase === 'Planning') {
-                    resetTurnSubmissions();
+                    // Reset sliders
+                    for (const slider of Object.values(sliders)) {
+                        slider.value = 0;
+                    }
+                    // Reset card selection
+                    document.getElementById('actionCard').value = '';
+                    // Re-enable submit button
+                    const submitBtn = document.getElementById('submitTurn');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'SUBMIT TURN';
+                    updateBudget();
                 }
             }
-        }
-        
-        // Add this to the existing handleGameUpdate function
-        const originalHandleGameUpdate = handleGameUpdate;
-        handleGameUpdate = function(message) {
-            originalHandleGameUpdate(message);
             
-            // Also update player controls
-            if (message.blocs || message.turn || message.phase) {
-                updateGameState(message);
+            // Update GDP if player bloc data is provided
+            if (data.blocs && data.blocs[playerBloc]) {
+                totalGDP = data.blocs[playerBloc].gdp_tokens;
+                updateBudget();
             }
+        }
+
+        // Initialize
+        updateBudget();
+
+        // ===== SETUP SCREEN FUNCTIONALITY =====
+        
+        let selectedBloc = null;
+        let gameSettings = {
+            turnLimit: 50,
+            victoryPoints: 50,
+            aiOpponents: true,
+            gameSpeed: 'normal'
         };
+        
+        // Get setup screen elements
+        const setupScreen = document.getElementById('setupScreen');
+        const blocCards = document.querySelectorAll('.bloc-card');
+        const startBtn = document.getElementById('startGameBtn');
+        const turnLimitSlider = document.getElementById('turnLimit');
+        const turnLimitValue = document.getElementById('turnLimitValue');
+        const victoryPointsSlider = document.getElementById('victoryPoints');
+        const victoryPointsValue = document.getElementById('victoryPointsValue');
+        const aiCheckbox = document.getElementById('aiOpponents');
+        const gameSpeedSelect = document.getElementById('gameSpeed');
+        
+        // Bloc selection functionality
+        blocCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove previous selection
+                blocCards.forEach(c => c.classList.remove('selected'));
+                
+                // Add selection to clicked card
+                card.classList.add('selected');
+                selectedBloc = card.dataset.bloc;
+                
+                // Update start button
+                startBtn.disabled = false;
+                startBtn.textContent = `START AS ${selectedBloc}`;
+                
+                // Update button color based on bloc
+                switch(selectedBloc) {
+                    case 'USA':
+                        startBtn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+                        startBtn.style.boxShadow = '0 4px 20px rgba(59, 130, 246, 0.3)';
+                        break;
+                    case 'EU':
+                        startBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                        startBtn.style.boxShadow = '0 4px 20px rgba(16, 185, 129, 0.3)';
+                        break;
+                    case 'CHINA':
+                        startBtn.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+                        startBtn.style.boxShadow = '0 4px 20px rgba(239, 68, 68, 0.3)';
+                        break;
+                }
+            });
+            
+            // Add hover effects
+            card.addEventListener('mouseenter', () => {
+                if (!card.classList.contains('selected')) {
+                    card.style.transform = 'translateY(-5px)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (!card.classList.contains('selected')) {
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+        
+        // Settings controls
+        turnLimitSlider.addEventListener('input', (e) => {
+            gameSettings.turnLimit = parseInt(e.target.value);
+            turnLimitValue.textContent = gameSettings.turnLimit;
+        });
+        
+        victoryPointsSlider.addEventListener('input', (e) => {
+            gameSettings.victoryPoints = parseInt(e.target.value);
+            victoryPointsValue.textContent = gameSettings.victoryPoints;
+        });
+        
+        aiCheckbox.addEventListener('change', (e) => {
+            gameSettings.aiOpponents = e.target.checked;
+        });
+        
+        gameSpeedSelect.addEventListener('change', (e) => {
+            gameSettings.gameSpeed = e.target.value;
+        });
+        
+        // Start game functionality
+        startBtn.addEventListener('click', () => {
+            if (!selectedBloc) return;
+            
+            // Show loading state
+            startBtn.innerHTML = '<span style="display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></span> INITIALIZING...';
+            startBtn.disabled = true;
+            
+            // Add spin animation
+            const style = document.createElement('style');
+            style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+            document.head.appendChild(style);
+            
+            // Prepare game configuration
+            const gameConfig = {
+                playerBloc: selectedBloc,
+                ...gameSettings
+            };
+            
+            // Send configuration to server
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'start_game',
+                    config: gameConfig
+                }));
+            }
+            
+            // Simulate loading time then start game
+            setTimeout(() => {
+                // Hide setup screen with fade effect
+                setupScreen.style.transition = 'opacity 0.5s ease';
+                setupScreen.style.opacity = '0';
+                
+                setTimeout(() => {
+                    setupScreen.classList.add('hidden');
+                    
+                    // Initialize player panel with selected bloc
+                    setPlayerPanel(selectedBloc);
+                    
+                    // Store game config globally
+                    window.gameConfig = gameConfig;
+                    
+                    console.log('Game started with config:', gameConfig);
+                }, 500);
+            }, 1500);
+        });
+
     </script>
 </body>
 </html>

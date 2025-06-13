@@ -92,6 +92,12 @@ class ConvictionWebBridge:
         
         if message_type == 'get_state':
             await self.send_game_state(ws)
+        elif message_type == 'get_player_bloc':
+            # Handle player bloc assignment request
+            await self.handle_player_bloc_request(ws)
+        elif message_type == 'start_game':
+            # Handle game start request from setup screen
+            await self.handle_game_start(ws, data)
         elif message_type == 'action' and self.game:
             # Handle game actions
             action_data = data.get('data', {})
@@ -134,6 +140,69 @@ class ConvictionWebBridge:
             if len(self.turn_submissions) == 3:
                 logger.info("\nAll players have submitted!")
                 await self.process_turn()
+    
+    async def handle_player_bloc_request(self, ws: web.WebSocketResponse):
+        """Handle player bloc assignment request."""
+        # For demo purposes, assign blocs in round-robin fashion
+        # In a real game, you'd have proper player assignment logic
+        
+        if not hasattr(self, 'assignment_counter'):
+            self.assignment_counter = 0
+        
+        blocs = ['USA', 'EU', 'China']
+        gdp_values = {'USA': 100, 'EU': 80, 'China': 90}  # Demo GDP values
+        
+        # Simple counter-based assignment for testing
+        assigned_bloc = blocs[self.assignment_counter % len(blocs)]
+        self.assignment_counter += 1
+        
+        logger.info(f"Assigned player to {assigned_bloc} (assignment #{self.assignment_counter})")
+        
+        # Send the assignment back to the client
+        await ws.send_str(json.dumps({
+            'type': 'player_bloc',
+            'bloc': assigned_bloc,
+            'gdp': gdp_values[assigned_bloc]
+        }))
+    
+    async def handle_game_start(self, ws: web.WebSocketResponse, data: Dict):
+        """Handle game start request from setup screen."""
+        config = data.get('config', {})
+        player_bloc = config.get('playerBloc')
+        
+        logger.info(f"Game start requested with config: {config}")
+        
+        # Initialize game settings if game exists
+        if self.game:
+            if hasattr(self.game, 'turn_limit'):
+                self.game.turn_limit = config.get('turnLimit', 50)
+            if hasattr(self.game, 'victory_threshold'):
+                self.game.victory_threshold = config.get('victoryPoints', 50)
+        
+        # Store game configuration
+        if not hasattr(self, 'game_config'):
+            self.game_config = {}
+        self.game_config.update(config)
+        
+        # Set up AI opponents if enabled
+        if config.get('aiOpponents'):
+            logger.info("AI opponents enabled")
+            # In a real implementation, you'd initialize AI players here
+        
+        # Send confirmation back to the requesting client
+        await ws.send_str(json.dumps({
+            'type': 'game_started',
+            'config': config,
+            'player_bloc': player_bloc
+        }))
+        
+        # Broadcast game start to all clients
+        await self.broadcast_update('game_started', {
+            'config': config,
+            'initial_state': self.serialize_game_state() if self.game else {}
+        })
+        
+        logger.info(f"Game started successfully for {player_bloc}")
     
     async def process_turn(self):
         """Process the turn once all players have submitted."""
@@ -262,6 +331,19 @@ class ConvictionWebBridge:
             'turn': turn,
             'phase': phase
         })
+    
+    async def update_turn_phase(self, turn: int, phase: str):
+        """Update the game turn and phase, then notify all clients."""
+        if self.game:
+            self.game.turn = turn
+            self.game.phase = phase
+        await self.notify_phase_change(turn, phase)
+    
+    async def update_region(self, region_name: str, new_owner: str, die_value: int = 3):
+        """Update a region's controller and notify all clients."""
+        if self.game and hasattr(self.game, 'provinces') and region_name in self.game.provinces:
+            self.game.provinces[region_name].controller = new_owner
+        await self.notify_region_change(region_name, new_owner, die_value)
     
     def set_game(self, game: 'ConvictionGame'):
         """Set the game instance for the bridge."""

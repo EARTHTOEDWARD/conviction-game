@@ -5,6 +5,7 @@ This connects the web UI to your actual game engine.
 """
 
 import asyncio
+import json
 from typing import Dict
 from models import Bloc, ProxyRegion, CardType
 from web_bridge import ConvictionWebBridge
@@ -89,11 +90,11 @@ class ConvictionGameWithControls:
             bloc.chosen_card = CardType[card] if card else None
             
             # Send confirmation
-            await ws.send_json({
+            await ws.send_str(json.dumps({
                 'type': 'turn_submitted',
                 'bloc': bloc_name,
                 'accepted': True
-            })
+            }))
             
             # Check if all submitted
             if len(self.turn_submissions) == 3:
