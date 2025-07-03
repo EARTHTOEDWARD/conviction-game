@@ -2,7 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, Tuple
 
 
 class TechLevel(Enum):
@@ -12,6 +12,7 @@ class TechLevel(Enum):
 
 
 class CardType(Enum):
+    # Original cards
     CYBER_ESPIONAGE = auto()
     TARIFF_HIKE = auto()
     PROXY_ARMS = auto()
@@ -22,7 +23,59 @@ class CardType(Enum):
     AID_RECONSTRUCTION = auto()
     LOBBYING_BLITZ = auto()
     CONTENT_MODERATION = auto()
+    
+    # New geopolitical cards
+    FINANCIAL_SANCTIONS = auto()
+    SECONDARY_SANCTIONS = auto()
+    DUMPING_PRODUCTS = auto()
+    ANTI_DUMPING = auto()
+    TECH_TRANSFER = auto()
+    EXPORT_CONTROLS = auto()
+    DEBT_TRAP = auto()
+    RARE_EARTH_EMBARGO = auto()
+    REGULATORY_CLAMPDOWN = auto()
+    CARBON_TARIFF = auto()
 
+
+class Domain(Enum):
+    """Policy domains that blocs can specialize in."""
+    CYBER = "Cyber"
+    TRADE = "Trade"
+    FINANCE = "Finance"
+    REGULATION = "Regulation"
+    MILITARY = "Military"
+    INFLUENCE = "Influence"
+
+
+class Target(Enum):
+    """Possible targets for policy cards."""
+    USA = "USA"
+    EU = "EU"
+    CHINA = "China"
+    BOTH = "Both"  # Target all other blocs
+
+
+@dataclass
+class PolicyCard:
+    """Enhanced policy card with domain and targeting."""
+    card_type: CardType
+    domain: Domain
+    base_cost: int  # GDP cost for single target
+    
+
+@dataclass 
+class Move:
+    """A player's move for the turn: card + targets."""
+    card: PolicyCard
+    targets: List[Target]
+    
+
+# Signature domains - each bloc gets cost discounts here
+SIGNATURE_DOMAIN = {
+    "USA": Domain.FINANCE,
+    "EU": Domain.REGULATION,
+    "China": Domain.TRADE,
+}
 
 # Card counter relationships (rock-paper-scissors style)
 COUNTER_TABLE = {
@@ -36,6 +89,122 @@ COUNTER_TABLE = {
     CardType.AID_RECONSTRUCTION: CardType.PROXY_ARMS,
     CardType.LOBBYING_BLITZ: CardType.STANDARDS_PUSH,
     CardType.CONTENT_MODERATION: CardType.DISINFORMATION,
+    # New cards
+    CardType.FINANCIAL_SANCTIONS: CardType.TRADE_DEAL,
+    CardType.SECONDARY_SANCTIONS: CardType.LOBBYING_BLITZ,
+    CardType.DUMPING_PRODUCTS: CardType.ANTI_DUMPING,
+    CardType.ANTI_DUMPING: CardType.DUMPING_PRODUCTS,
+    CardType.TECH_TRANSFER: CardType.EXPORT_CONTROLS,
+    CardType.EXPORT_CONTROLS: CardType.TECH_TRANSFER,
+    CardType.DEBT_TRAP: CardType.AID_RECONSTRUCTION,
+    CardType.RARE_EARTH_EMBARGO: CardType.TRADE_DEAL,
+    CardType.REGULATORY_CLAMPDOWN: CardType.LOBBYING_BLITZ,
+    CardType.CARBON_TARIFF: CardType.TRADE_DEAL,
+}
+
+# Policy cards with full details
+POLICY_CARDS = {
+    CardType.CYBER_ESPIONAGE: PolicyCard(
+        card_type=CardType.CYBER_ESPIONAGE,
+        domain=Domain.CYBER,
+        base_cost=3
+    ),
+    CardType.TARIFF_HIKE: PolicyCard(
+        card_type=CardType.TARIFF_HIKE,
+        domain=Domain.TRADE,
+        base_cost=4
+    ),
+    CardType.PROXY_ARMS: PolicyCard(
+        card_type=CardType.PROXY_ARMS,
+        domain=Domain.MILITARY,
+        base_cost=5
+    ),
+    CardType.STANDARDS_PUSH: PolicyCard(
+        card_type=CardType.STANDARDS_PUSH,
+        domain=Domain.REGULATION,
+        base_cost=4
+    ),
+    CardType.DISINFORMATION: PolicyCard(
+        card_type=CardType.DISINFORMATION,
+        domain=Domain.INFLUENCE,
+        base_cost=3
+    ),
+    CardType.COUNTER_INTEL: PolicyCard(
+        card_type=CardType.COUNTER_INTEL,
+        domain=Domain.CYBER,
+        base_cost=3
+    ),
+    CardType.TRADE_DEAL: PolicyCard(
+        card_type=CardType.TRADE_DEAL,
+        domain=Domain.TRADE,
+        base_cost=3
+    ),
+    CardType.AID_RECONSTRUCTION: PolicyCard(
+        card_type=CardType.AID_RECONSTRUCTION,
+        domain=Domain.INFLUENCE,
+        base_cost=4
+    ),
+    CardType.LOBBYING_BLITZ: PolicyCard(
+        card_type=CardType.LOBBYING_BLITZ,
+        domain=Domain.INFLUENCE,
+        base_cost=3
+    ),
+    CardType.CONTENT_MODERATION: PolicyCard(
+        card_type=CardType.CONTENT_MODERATION,
+        domain=Domain.REGULATION,
+        base_cost=2
+    ),
+    # New cards
+    CardType.FINANCIAL_SANCTIONS: PolicyCard(
+        card_type=CardType.FINANCIAL_SANCTIONS,
+        domain=Domain.FINANCE,
+        base_cost=5
+    ),
+    CardType.SECONDARY_SANCTIONS: PolicyCard(
+        card_type=CardType.SECONDARY_SANCTIONS,
+        domain=Domain.FINANCE,
+        base_cost=3
+    ),
+    CardType.DUMPING_PRODUCTS: PolicyCard(
+        card_type=CardType.DUMPING_PRODUCTS,
+        domain=Domain.TRADE,
+        base_cost=4
+    ),
+    CardType.ANTI_DUMPING: PolicyCard(
+        card_type=CardType.ANTI_DUMPING,
+        domain=Domain.TRADE,
+        base_cost=2
+    ),
+    CardType.TECH_TRANSFER: PolicyCard(
+        card_type=CardType.TECH_TRANSFER,
+        domain=Domain.CYBER,
+        base_cost=6
+    ),
+    CardType.EXPORT_CONTROLS: PolicyCard(
+        card_type=CardType.EXPORT_CONTROLS,
+        domain=Domain.REGULATION,
+        base_cost=4
+    ),
+    CardType.DEBT_TRAP: PolicyCard(
+        card_type=CardType.DEBT_TRAP,
+        domain=Domain.FINANCE,
+        base_cost=5
+    ),
+    CardType.RARE_EARTH_EMBARGO: PolicyCard(
+        card_type=CardType.RARE_EARTH_EMBARGO,
+        domain=Domain.TRADE,
+        base_cost=4
+    ),
+    CardType.REGULATORY_CLAMPDOWN: PolicyCard(
+        card_type=CardType.REGULATORY_CLAMPDOWN,
+        domain=Domain.REGULATION,
+        base_cost=4
+    ),
+    CardType.CARBON_TARIFF: PolicyCard(
+        card_type=CardType.CARBON_TARIFF,
+        domain=Domain.REGULATION,
+        base_cost=3
+    ),
 }
 
 # Card effects when successful (not countered)
@@ -80,6 +249,47 @@ CARD_EFFECTS = {
         "description": "Boost cohesion and cultural influence",
         "effect": "boost_moderation",
     },
+    # New cards
+    CardType.FINANCIAL_SANCTIONS: {
+        "description": "Freeze opponent GDP and reduce economic development",
+        "effect": "financial_sanctions",
+    },
+    CardType.SECONDARY_SANCTIONS: {
+        "description": "Force allies to join sanctions or pay penalty",
+        "effect": "secondary_sanctions",
+    },
+    CardType.DUMPING_PRODUCTS: {
+        "description": "Damage opponent's economic development",
+        "effect": "dumping",
+    },
+    CardType.ANTI_DUMPING: {
+        "description": "Protect economy and gain GDP",
+        "effect": "anti_dumping",
+    },
+    CardType.TECH_TRANSFER: {
+        "description": "Share tech with ally, both gain tech progress",
+        "effect": "tech_transfer",
+    },
+    CardType.EXPORT_CONTROLS: {
+        "description": "Block opponent tech advancement",
+        "effect": "export_controls",
+    },
+    CardType.DEBT_TRAP: {
+        "description": "Gain influence over opponent territories",
+        "effect": "debt_trap",
+    },
+    CardType.RARE_EARTH_EMBARGO: {
+        "description": "Cripple opponent's tech and military production",
+        "effect": "rare_earth_embargo",
+    },
+    CardType.REGULATORY_CLAMPDOWN: {
+        "description": "Massively increase opponent's regulatory drag",
+        "effect": "regulatory_clampdown",
+    },
+    CardType.CARBON_TARIFF: {
+        "description": "Tax opponent's GDP unless they go green",
+        "effect": "carbon_tariff",
+    },
 }
 
 
@@ -116,6 +326,10 @@ class Bloc:
 
     # Card selection for this turn
     chosen_card: Optional["CardType"] = None
+    chosen_targets: List[Target] = field(default_factory=list)
+    
+    # Lever track (0-3) for signature domain
+    lever_level: int = 0
 
     # Domain scores (0–5 scale unless noted)
     tech_level: int = 0
@@ -133,6 +347,10 @@ class Bloc:
     colour: str = ""  # useful for ASCII map
 
     # ---------- helpers ----------
+    def get_signature_domain(self) -> Optional[Domain]:
+        """Get this bloc's signature domain for cost discounts."""
+        return SIGNATURE_DOMAIN.get(self.name)
+        
     def effective_drag(self) -> int:
         """Drag after trust is netted out."""
         return max(self.regulatory_drag - self.trust_score, 0)
